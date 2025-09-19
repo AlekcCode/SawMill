@@ -1,0 +1,740 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЛесПилСтрой-НН - Доставка и Оплата</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Обновленная премиальная цветовая палитра */
+            --primary-color: #1a1a1a;
+            --secondary-color: #2d3748;
+            --accent-color: #f6ad55;
+            --accent-secondary: #ed8936;
+            --light-bg: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            --dark-bg: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text-color: #2d3748;
+            --light-text: #ffffff;
+            --shadow-light: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --shadow-medium: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.25);
+            --border-radius: 16px;
+            --border-radius-large: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Gilroy', Arial, sans-serif;
+            /* Премиальный градиентный фон */
+            background: var(--light-bg);
+            position: relative;
+        }
+
+        /* Добавляем фоновую текстуру для премиального вида */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(246, 173, 85, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(237, 137, 54, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            /* Стеклянный эффект для хедера */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow-light);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            /* Градиентный текст для логотипа */
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        /* Премиальный hover эффект для навигации */
+        .nav-menu a:hover {
+            color: var(--accent-color);
+            background: rgba(246, 173, 85, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 20px;
+        }
+
+        @media (max-width: 968px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .delivery-info {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-large);
+            padding: 30px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--glass-border);
+        }
+
+        .delivery-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .delivery-title i {
+            color: var(--accent-color);
+        }
+
+        .city-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .city-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, rgba(246, 173, 85, 0.1), rgba(237, 137, 54, 0.1));
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(246, 173, 85, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .city-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .city-name {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .city-price {
+            font-weight: 700;
+            color: var(--accent-secondary);
+        }
+
+        .delivery-note {
+            background: linear-gradient(135deg, rgba(66, 153, 225, 0.1), rgba(102, 126, 234, 0.1));
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(66, 153, 225, 0.2);
+            margin-top: 20px;
+        }
+
+        .delivery-note p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .delivery-note p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Form Styles */
+        .order-form {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-large);
+            padding: 30px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--glass-border);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-title i {
+            color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            background: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(246, 173, 85, 0.3);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center
+        }
+
+        /* Delivery Option Styles */
+        .delivery-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .delivery-option {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .footer-content {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                gap: 20px;
+            }
+
+            .categories, .products {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cart-dropdown-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Footer */
+        .footer {
+            /* Премиальный градиентный футер */
+            background: linear-gradient(135deg,
+                rgba(45, 55, 72, 0.95) 0%,
+                rgba(26, 32, 44, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 60px 20px 20px;
+            margin-top: 80px;
+            position: relative;
+        }
+
+        /* Декоративные элементы для футера */
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(246, 173, 85, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(237, 137, 54, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            /* Светлый цвет для заголовков в футере */
+            color: var(--light-text);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .delivery-option:hover {
+            border-color: var(--accent-color);
+        }
+
+        .delivery-option.active {
+            border-color: var(--accent-color);
+            background: linear-gradient(135deg, rgba(246, 173, 85, 0.1), rgba(237, 137, 54, 0.1));
+        }
+
+        .delivery-option i {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .delivery-option.active i {
+            color: var(--accent-color);
+        }
+
+        .city-field {
+            overflow: hidden;
+            transition: all 0.4s ease;
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .city-field.visible {
+            max-height: 100px;
+            opacity: 1;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .delivery-title, .form-title {
+                font-size: 1.5rem;
+            }
+
+            .delivery-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <img class="header_logo" src="{% static 'image/logothesawmill-no-bg-preview%20(carve.photos).png' %}" height="50" width="50">
+            <nav class="nav-menu">
+                <a href="{% url 'home' %}">Главная</a>
+                <a href="{% url 'catalog' %}">Ассортимент</a>
+                <a href="{% url 'delivery' %}">Доставка и Оплата</a>
+                <a href="{% url 'cart' %}"><i class="fas fa-shopping-basket"></i></a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Доставка и Оплата</h1>
+                <p class="hero-subtitle">Быстрая и надежная доставка пиломатериалов по Нижегородской области</p>
+            </div>
+        </section>
+
+        <!-- Content Section -->
+        <section class="content-wrapper">
+            <!-- Delivery Information -->
+            <div class="delivery-info">
+                <h2 class="delivery-title"><i class="fas fa-truck"></i> Стоимость доставки</h2>
+                <ul class="city-list">
+                    <li class="city-item">
+                        <span class="city-name">Нижний Новгород</span>
+                        <span class="city-price">от 3000 руб</span>
+                    </li>
+                    <li class="city-item">
+                        <span class="city-name">Дзержинск</span>
+                        <span class="city-price">от 5000 руб</span>
+                    </li>
+                    <li class="city-item">
+                        <span class="city-name">Балахна</span>
+                        <span class="city-price">от 500 руб</span>
+                    </li>
+                    <li class="city-item">
+                        <span class="city-name">Заволжье</span>
+                        <span class="city-price">от 1200 руб</span>
+                    </li>
+                    <li class="city-item">
+                        <span class="city-name">Городец</span>
+                        <span class="city-price">от 4000 руб</span>
+                    </li>
+                    <li class="city-item">
+                        <span class="city-name">Чкаловск</span>
+                        <span class="city-price">от 1200 руб</span>
+                    </li>
+                </ul>
+
+                <div class="delivery-note">
+                    <p>Доставка осуществляется газоном-самосвалом</p>
+                    <p>Указанная стоимость доставки является стартовой и зависит от объема партии.</p>
+                    <p>Для оптовых покупателей и крупных заказов мы готовы предложить индивидуальные тарифы, которые позволят значительно снизить транспортные расходы.</p>
+                    <p>Актуальную стоимость доставки уточняйте у вашего менеджера.</p>
+                </div>
+            </div>
+
+            <!-- Order Form -->
+            <div class="order-form">
+                <h2 class="form-title"><i class="fas fa-clipboard-list"></i> Форма заказа</h2>
+                <form id="deliveryOrderForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Ваше имя</label>
+                        <input type="text" id="name" class="form-input" placeholder="Введите ваше имя" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Телефон</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="+7 (XXX) XXX-XX-XX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" id="email" class="form-input" placeholder="example@mail.com">
+                    </div>
+
+                    <!-- Delivery Options -->
+                    <div class="form-group">
+                        <label class="form-label">Способ получения</label>
+                        <div class="delivery-options">
+                            <div class="delivery-option active" data-type="delivery">
+                                <i class="fas fa-truck"></i>
+                                <div>Доставка</div>
+                            </div>
+                            <div class="delivery-option" data-type="pickup">
+                                <i class="fas fa-store"></i>
+                                <div>Самовывоз</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- City Field (initially visible) -->
+                    <div class="city-field visible" id="cityField">
+                        <select id="city" class="form-input" required>
+                            <option value="">Выберите город</option>
+                            <option value="Нижний Новгород">Нижний Новгород</option>
+                            <option value="Дзержинск">Дзержинск</option>
+                            <option value="Балахна">Балахна</option>
+                            <option value="Заволжье">Заволжье</option>
+                            <option value="Городец">Городец</option>
+                            <option value="Чкаловск">Чкаловск</option>
+                            <option value="Другой город">Другой город</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="message">Дополнительная информация</label>
+                        <textarea id="message" class="form-textarea" placeholder="Здесь вы можете указать особые пожелания к заказу или доставке"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Отправить запрос
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Каталог</h3>
+                <ul>
+                    <li><a href="#">Брус</a></li>
+                    <li><a href="#">Доска</a></li>
+                    <li><a href="#">Опилки</a></li>
+                    <li><a href="#">Горбыль</a></li>
+                    <li><a href="#">Кругляк</a></li>
+                    <li><a href="#">Щепа</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Покупателям</h3>
+                <ul>
+                    <li><a href="#">Доставка и оплата</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Информация</h3>
+                <ul>
+                    <li><a href="#">О компании</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Публичная оферта</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p><strong>Нижегородская область, Балахнинский муниципальный округ, деревня Большие Могильцы, 75</strong></p>
+                <p>Фабрика: 08:00 – 17:00, Пн-Сб</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Добавляем анимацию при прокрутке
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.order-form');
+            const info = document.querySelector('.delivery-info');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            form.style.opacity = 0;
+            form.style.transform = 'translateY(20px)';
+            form.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(form);
+
+            info.style.opacity = 0;
+            info.style.transform = 'translateY(20px)';
+            info.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(info);
+
+            // Обработка выбора способа доставки
+            const deliveryOptions = document.querySelectorAll('.delivery-option');
+            const cityField = document.getElementById('cityField');
+            const citySelect = document.getElementById('city');
+
+            deliveryOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Убираем активный класс у всех опций
+                    deliveryOptions.forEach(opt => opt.classList.remove('active'));
+
+                    // Добавляем активный класс к выбранной опции
+                    this.classList.add('active');
+
+                    // Показываем или скрываем поле выбора города
+                    if (this.dataset.type === 'delivery') {
+                        cityField.classList.add('visible');
+                        citySelect.setAttribute('required', 'required');
+                    } else {
+                        cityField.classList.remove('visible');
+                        citySelect.removeAttribute('required');
+                    }
+                });
+            });
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+
+            // Обработка отправки формы
+            document.getElementById('deliveryOrderForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                const deliveryType = document.querySelector('.delivery-option.active').dataset.type;
+                const city = document.getElementById('city').value;
+                const message = document.getElementById('message').value;
+
+                const orderData = {
+                    name,
+                    phone,
+                    email,
+                    deliveryType,
+                    city,
+                    message,
+                    items: [],  // Пустой массив, так как это форма с delivery_page
+                    total: 0,   // Общая сумма не нужна, так как это запрос, а не заказ
+                };
+
+                try {
+                    const response = await fetch('/api/orders/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        },
+                        body: JSON.stringify(orderData),
+                    });
+
+                    if (response.ok) {
+                        alert('Спасибо за ваш запрос! Мы свяжемся с вами в ближайшее время.');
+                        this.reset();
+                    } else {
+                        alert('Произошла ошибка. Попробуйте позже.');
+                    }
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    alert('Произошла ошибка. Попробуйте позже.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
