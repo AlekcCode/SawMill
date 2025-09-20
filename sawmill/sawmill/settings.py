@@ -16,7 +16,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = ['xn--80aefemlbdh0a3c.xn--p1ai', 'www.xn--80aefemlbdh0a3c.xn--p1ai', '5.129.193.226', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['xn--e1agdfcnafgmhdn.xn--p1ai', 'www.xn--e1agdfcnafgmhdn.xn--p1ai', '5.129.193.226', 'localhost', '127.0.0.1']
 
 
 # Quick-start development settings - unsuitable for production
