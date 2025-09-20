@@ -16,7 +16,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = ['xn--80aefemlbdh0a3c.xn--p1ai', '5.129.193.226', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['xn--80aefemlbdh0a3c.xn--p1ai', 'www.xn--80aefemlbdh0a3c.xn--p1ai', '5.129.193.226', 'localhost', '127.0.0.1']
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +26,7 @@ ALLOWED_HOSTS = ['xn--80aefemlbdh0a3c.xn--p1ai', '5.129.193.226', 'localhost', '
 SECRET_KEY = 'django-insecure-(avic=kc)p5&8zj2bo1st)62bk90xl6+j*n5@u_!96#hyp4wo!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
